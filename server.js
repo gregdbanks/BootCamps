@@ -3,11 +3,12 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const colors = require("colors");
 const morgan = require("morgan");
+const bodyParser = require("body-parser");
 
 const app = express();
 
-// Route files
-const bootcamps = require("./routes/bootcamps");
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -15,8 +16,14 @@ dotenv.config({ path: "./config/config.env" });
 // Connect to database
 connectDB();
 
+// Route files
+const bootcamps = require("./routes/bootcamps");
+
 // Mount routers
 app.use("/api/v1/bootcamps", bootcamps);
+
+//body parser
+app.use(express.json());
 
 // Dev logging middleware
 if (process.env.NODE_ENV === "development") {
