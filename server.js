@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const connectDB = require("./config/db");
 const colors = require("colors");
 const morgan = require("morgan");
+const errorHandler = require("./middleware/error");
 const bodyParser = require("body-parser");
 
 const app = express();
@@ -21,6 +22,9 @@ const bootcamps = require("./routes/bootcamps");
 
 // Mount routers
 app.use("/api/v1/bootcamps", bootcamps);
+
+// This has to be after mounted routers
+app.use(errorHandler);
 
 //body parser
 app.use(express.json());
